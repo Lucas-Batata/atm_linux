@@ -2,14 +2,12 @@
 #define DISPLAY_H
 
 #include <string>
+#include <iostream>
 
 class Display
 {
-    private:
-        std::string mMessage = std::string.Empty;
     public:
-        void showMessage();
-        void defMessage(std::string message);
+        void showMessage(std::string);
 };
 
 

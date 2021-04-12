@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/atm.dir/src/dispenser.cpp.o CMakeFiles/atm.dir/src/display.cpp.o CMakeFiles/atm.dir/src/keyboard.cpp.o CMakeFiles/atm.dir/src/main.cpp.o  -o atm 
