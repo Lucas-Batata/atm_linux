@@ -2,5 +2,13 @@
 
 void Display::showMessage(std::string message)
 {
-    std::cout << message;
+    if(message == "clear")
+    {
+        std::system("clear");
+    }
+    else
+    {
+        std::cout << message;
+    }
+    
 }

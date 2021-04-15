@@ -7,11 +7,15 @@
 #IncludeRegexTransform: 
 
 ../include/dispenser.h
+algorithm
+-
 list
 -
 iterator
 -
 string
+-
+vector
 -
 fstream
 -
@@ -39,16 +43,16 @@ vector
 /home/lucasbatata/projetos/atm/src/main.cpp
 iostream
 -
+vector
+-
+string
+-
+cmath
+-
 display.h
 /home/lucasbatata/projetos/atm/src/display.h
 keyboard.h
 /home/lucasbatata/projetos/atm/src/keyboard.h
-vector
--
-stdio.h
--
 dispenser.h
 /home/lucasbatata/projetos/atm/src/dispenser.h
-string
--
 

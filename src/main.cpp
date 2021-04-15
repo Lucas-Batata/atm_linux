@@ -1,75 +1,116 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cmath>
 #include "display.h"
 #include "keyboard.h"
 #include "dispenser.h"
 
-const int MAXVALUEDEBIT = 20000;
+const int MAXVALUEDEBIT = 99999;
 
 void initializeMessages(std::string, Display);
 
-int main(void)
+int main(int argc, char *argv[ ])
 {
+	bool trueOperation = false;
+
+	if(argc>1)
+		if (strcmp(argv[1], "true") == 0)
+			trueOperation = true;
+
+
 	Display display;
 	Keyboard keyboard;
 	Dispenser dispenser;
-	
-	int numPressed = 0;
-	unsigned int totalValue = 0;
-	std::string strMessage = "";
 
-	std::list<int> availableNotes = dispenser.getAvailableNotes();
-	std::list<int>::iterator it;
-
-    strMessage = dispenser.getAvailableNotesString();
-
-	initializeMessages(strMessage, display);
-
-	for(;;)
+	do
 	{
-		totalValue = keyboard.getTotalValue();
+		int numPressed = 0;
+		unsigned int totalValue = 0;
+		std::string strMessage = "";
+		std::string balanceAtm = std::to_string(dispenser.getTotalBalance());
+		std::cout << "Balance: " + balanceAtm << std::endl;
+		strMessage = dispenser.getAvailableNotesString();
 
-		numPressed = keyboard.getKeyInput();
-		
-		if(numPressed >= 0)
+		initializeMessages(strMessage, display);
+
+		for(;;)
 		{
-			if((numPressed + totalValue) < MAXVALUEDEBIT)
+			totalValue = keyboard.getTotalValue();
+
+			numPressed = keyboard.getKeyInput();
+			
+			if(numPressed >= 0)
 			{
-				keyboard.insertValue(numPressed);
+				if(((floor(log10(abs(numPressed))) + 1) + (floor(log10(abs(totalValue))) + 1)) < 6)
+				{
+					keyboard.insertValue(numPressed);
+				}
+				else
+				{
+					display.showMessage("\nO valor máximo de saque é: R$ " + std::to_string(MAXVALUEDEBIT) + "\n" );
+				}
+			}
+			else if(numPressed == -1)
+			{
+				keyboard.clearKeyboard();
+			}
+			else if(numPressed == -2)
+			{
+				keyboard.removeLastValue();
 			}
 			else
 			{
-				display.showMessage("\nO valor máximo de saque é: R$ " + std::to_string(MAXVALUEDEBIT) + "\n" );
+				break;
 			}
+
+			//display.showMessage("clear");
+			
+			totalValue = keyboard.getTotalValue();
+
+			strMessage = "R$ ";
+			strMessage += std::to_string(totalValue);
+			strMessage += ",00\n";
+			
+			display.showMessage(strMessage);
 		}
-		else if(numPressed == -1)
-		{
-			keyboard.clearKeyboard();
-		}
-		else if(numPressed == -2)
-		{
-			keyboard.removeLastValue();
+
+		/*Etapa de liberar valor para o usuário. Se valor > 1*/
+		if(totalValue > 1)
+		{	
+			/*Só faz uma consulta para saber se será possível fazer o saque*/
+			int available = dispenser.withdraw(totalValue, false);
+					
+			/*Se o valor de saque foi o mesmo que o solicitado*/
+			if( available == totalValue)
+			{
+				/*Faz a operação real de liberar as notas*/
+				int available = dispenser.withdraw(totalValue, trueOperation);
+				display.showMessage("\nSaque completo!\n");
+			}
+			else if (available < 1)
+			{
+				display.showMessage("\nFalha ao efetuar saque.");
+				display.showMessage("\nValor próximo ao solicitado: ");
+				display.showMessage(std::to_string(abs(available)));
+			}
+			else
+			{
+				display.showMessage("\nFalha ao efetuar saque.\n");
+				display.showMessage("Valor disponível: \n");
+				display.showMessage(std::to_string(available));
+			}
 		}
 		else
 		{
-			break;
+			display.showMessage("\nNão existe valor de saque.\n");
+			return 0;
 		}
 
-		totalValue = keyboard.getTotalValue();
+		keyboard.clearKeyboard();
+		display.showMessage("\n\n");
 
-		strMessage = "R$ ";
-		strMessage += std::to_string(totalValue);
-		strMessage += ",00\n";
-		
-		display.showMessage(strMessage);
-	}
-
-	/*Etapa de liberar valor para o usuário. Se valor > 1*/
-	if(totalValue > 1)
-	{
-
-	}
+	}while(true);
 
 	return 0;
 }
