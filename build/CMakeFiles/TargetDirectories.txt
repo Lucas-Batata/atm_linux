@@ -1,3 +1,0 @@
-/home/lucasbatata/projetos/atm/build/CMakeFiles/rebuild_cache.dir
-/home/lucasbatata/projetos/atm/build/CMakeFiles/edit_cache.dir
-/home/lucasbatata/projetos/atm/build/CMakeFiles/atm.dir

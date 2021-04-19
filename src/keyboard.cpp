@@ -1,4 +1,4 @@
-#include "keyboard.h"
+#include "../include/keyboard.h"
 #include <iostream>
 
 int Keyboard::getKeyInput()

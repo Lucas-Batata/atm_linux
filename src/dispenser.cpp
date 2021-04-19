@@ -1,4 +1,4 @@
-#include "dispenser.h"
+#include "../include/dispenser.h"
 
 Dispenser::Dispenser()
 {
@@ -259,7 +259,7 @@ int Dispenser::withdraw(int valueWithdraw, bool subtract)
 
     /*Se o número for uma exceção aos números que podem ser subtraidos do maior para o menor, eu tento subtrair tres notas de R$6
         para o número ser facilmente subtraido na próxima etapa*/
-    std::cout << unityNumber << std::endl;
+
     if((unityNumber == 3) or (unityNumber == 6)  or (unityNumber == 8) or (unityNumber == 3))
     {
         for (int i = 0; i < 3; i++)
